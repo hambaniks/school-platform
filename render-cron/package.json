@@ -1,0 +1,11 @@
+{
+  "name": "school-platform-cron",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.8"
+  }
+}

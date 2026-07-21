@@ -1,0 +1,6 @@
+[functions]
+sa-sams-parser = { verify_jwt = false, import_map = "import_map.json" }
+truancy-watchdog = { verify_jwt = false, import_map = "import_map.json", schedule = "0 2 * * *" }
+attendance-compliance = { verify_jwt = false, import_map = "import_map.json", schedule = "0 14 * * *" }
+payfast-billing = { verify_jwt = false, import_map = "import_map.json" }
+health-pdf-generator = { verify_jwt = false, import_map = "import_map.json", schedule = "0 6 1 * *" }

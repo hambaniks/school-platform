@@ -1,0 +1,38 @@
+services:
+  - type: cron
+    name: truancy-watchdog
+    runtime: node
+    schedule: "0 2 * * *"
+    buildCommand: npm install
+    startCommand: node workers/truancy-watchdog.mjs
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+  - type: cron
+    name: attendance-compliance
+    runtime: node
+    schedule: "0 14 * * *"
+    buildCommand: npm install
+    startCommand: node workers/attendance-compliance.mjs
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+  - type: cron
+    name: health-pdf-generator
+    runtime: node
+    schedule: "0 6 1 * *"
+    buildCommand: npm install
+    startCommand: node workers/health-pdf-generator.mjs
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: HEALTH_DEPT_EMAIL
+        sync: false
