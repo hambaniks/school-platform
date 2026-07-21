@@ -60,7 +60,7 @@ export default function SuperAdmin() {
           {/* Stats */}
           <div className="grid grid-cols-5 gap-4">
             <StatCard label="Total Schools" value="14" change="2 pending audit" changeType="neutral" accent="cyan" trend={85} />
-            <StatCard label="Total Learners" value={totalLearners.toLocaleString()} change="+124 this month" changeType="increase" accent="blue" trend={72} />
+            <StatCard label="Total Learners" value={totalLearners.toLocaleString()} change="+124 this month" changeType="increase" accent="cyan" trend={72} />
             <StatCard label="Active Alerts" value="23" change="+5 vs last week" changeType="increase" accent="red" trend={68} />
             <StatCard label="Billing Rate" value="91.6%" change="R42,800 collected" changeType="increase" accent="green" trend={92} />
             <StatCard label="Truancy Rate" value="3.2%" change="-0.8% improvement" changeType="decrease" accent="amber" trend={32} />
@@ -83,7 +83,7 @@ export default function SuperAdmin() {
           </NeonCard>
 
           {/* Schools table */}
-          <NeonCard title="School Directory" subtitle="All schools · billing & alert status" accent="blue">
+          <NeonCard title="School Directory" subtitle="All schools · billing & alert status" accent="cyan">
             <div className="flex items-center gap-3 mb-4">
               <div className="relative flex-1">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />

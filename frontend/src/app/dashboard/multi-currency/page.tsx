@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import StatCard from '@/components/dashboard/StatCard';
@@ -216,7 +216,7 @@ export default function MultiCurrencyPage() {
     return true;
   });
 
-  const currs = [...new Set(invoices.map((i) => i.currency))];
+  const currs = Array.from(new Set(invoices.map((i) => i.currency)));
 
   if (loading) return <LoadingSpinner size="lg" />;
   if (error) return <ErrorState message={error} onRetry={load} />;
