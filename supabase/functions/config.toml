@@ -1,6 +1,29 @@
 [functions]
-sa-sams-parser = { verify_jwt = false, import_map = "import_map.json" }
-truancy-watchdog = { verify_jwt = false, import_map = "import_map.json", schedule = "0 2 * * *" }
-attendance-compliance = { verify_jwt = false, import_map = "import_map.json", schedule = "0 14 * * *" }
-payfast-billing = { verify_jwt = false, import_map = "import_map.json" }
-health-pdf-generator = { verify_jwt = false, import_map = "import_map.json", schedule = "0 6 1 * *" }
+
+[functions.truancy-watchdog]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.attendance-compliance]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.health-pdf-generator]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.auto-grading]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.billing-convert]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.immunization-reminder]
+verify_jwt = false
+import_map = "./import_map.json"
+
+[functions.truancy-prediction]
+verify_jwt = false
+import_map = "./import_map.json"
