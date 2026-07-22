@@ -192,39 +192,31 @@ CREATE OR REPLACE FUNCTION get_user_school_id() RETURNS UUID LANGUAGE SQL STABLE
 $$;
 
 -- Profiles RLS
-CREATE POLICY "profiles_select_own" ON profiles FOR SELECT USING (id = auth.uid());
-CREATE POLICY "profiles_select_school" ON profiles FOR SELECT USING (school_id = get_user_school_id());
-CREATE POLICY "profiles_update_own" ON profiles FOR UPDATE USING (id = auth.uid()) WITH CHECK (id = auth.uid());
+DO $$ BEGIN CREATE POLICY "profiles_select_own" ON profiles FOR SELECT USING (id = auth.uid()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "profiles_select_school" ON profiles FOR SELECT USING (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "profiles_update_own" ON profiles FOR UPDATE USING (id = auth.uid()) WITH CHECK (id = auth.uid()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- Learners RLS
-CREATE POLICY "learners_select_school" ON learners FOR SELECT USING (school_id = get_user_school_id());
-CREATE POLICY "learners_insert_school" ON learners FOR INSERT WITH CHECK (school_id = get_user_school_id());
-CREATE POLICY "learners_update_school" ON learners FOR UPDATE USING (school_id = get_user_school_id());
+DO $$ BEGIN CREATE POLICY "learners_select_school" ON learners FOR SELECT USING (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "learners_insert_school" ON learners FOR INSERT WITH CHECK (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "learners_update_school" ON learners FOR UPDATE USING (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- Attendance RLS
-CREATE POLICY "attendance_select_school" ON attendance FOR SELECT USING (school_id = get_user_school_id());
-CREATE POLICY "attendance_insert_school" ON attendance FOR INSERT WITH CHECK (school_id = get_user_school_id());
+DO $$ BEGIN CREATE POLICY "attendance_select_school" ON attendance FOR SELECT USING (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "attendance_insert_school" ON attendance FOR INSERT WITH CHECK (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- Clinical Alerts RLS
-CREATE POLICY "alerts_select_school" ON clinical_alerts FOR SELECT USING (school_id = get_user_school_id());
-CREATE POLICY "alerts_update_clinic" ON clinical_alerts FOR UPDATE USING (
+DO $$ BEGIN CREATE POLICY "alerts_select_school" ON clinical_alerts FOR SELECT USING (school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "alerts_update_clinic" ON clinical_alerts FOR UPDATE USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('clinic','superadmin'))
-);
+); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- Billing RLS
-CREATE POLICY "billing_select_own" ON billing FOR SELECT USING (parent_id = auth.uid() OR school_id = get_user_school_id());
-
--- Storage Buckets
-INSERT INTO storage.buckets (id, name, public) VALUES
-  ('homework-submissions', 'homework-submissions', false),
-  ('learning-resources', 'learning-resources', false),
-  ('official-reports', 'official-reports', false)
-ON CONFLICT (id) DO NOTHING;
+DO $$ BEGIN CREATE POLICY "billing_select_own" ON billing FOR SELECT USING (parent_id = auth.uid() OR school_id = get_user_school_id()); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- Storage RLS
-CREATE POLICY "storage_select_school" ON storage.objects FOR SELECT USING (bucket_id IN ('homework-submissions','learning-resources','official-reports') AND (storage.foldername(name))[1] = get_user_school_id()::text);
-CREATE POLICY "storage_insert_school" ON storage.objects FOR INSERT WITH CHECK ((storage.foldername(name))[1] = get_user_school_id()::text);
-
+DO $$ BEGIN CREATE POLICY "storage_select_school" ON storage.objects FOR SELECT USING (bucket_id IN ('homework-submissions','learning-resources','official-reports') AND (storage.foldername(name))[1] = get_user_school_id()::text); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN CREATE POLICY "storage_insert_school" ON storage.objects FOR INSERT WITH CHECK ((storage.foldername(name))[1] = get_user_school_id()::text); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_attendance_learner_date ON attendance(learner_id, date);
 CREATE INDEX IF NOT EXISTS idx_attendance_school_date ON attendance(school_id, date);
