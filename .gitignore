@@ -7,4 +7,7 @@ node_modules/
 dist/
 .cache/
 __pycache__/
-*.pyc
+*.pyc.elastic-copilot/
+ql
+.elastic-copilot/
+ql
